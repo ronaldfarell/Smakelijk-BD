@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ruang BD</title>
+<!--
+KEPUTUSAN DESAIN/TEKNIS (tanpa tanya balik):
+- Merek, tagline, logo: ubah variabel BRAND di bawah (logo = URL/data URI gambar; kosong = ikon garis bawaan).
+- Isi template surat belum ditempel, jadi semua memakai KERANGKA SEMENTARA surat resmi Indonesia. Ganti teks di objek TPL (placeholder {{nama_field}}).
+- "Bantu tulis": halaman ini tidak punya akses AI, jadi tombol mengisi CONTOH TEKS STATIS yang bisa diedit.
+- Font ke-4 (Source Serif 4) hanya untuk pratinjau surat, sesuai brief.
+- Mode gelap disediakan sebagai penyesuaian warna token; kertas surat tetap putih gading.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Archivo+Narrow:wght@500;600&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ECE6D6;--ink:#231F20;--acc:#EEA0A4;--panel:#F5F1E6;--mute:#231F20b3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2A2526;--ink:#ECE6D6;--acc:#C98A8E;--panel:#352F30;--mute:#ECE6D6b3;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2A2526;--ink:#ECE6D6;--acc:#C98A8E;--panel:#352F30;--mute:#ECE6D6b3;color-scheme:dark}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--acc);color:var(--ink);font:14px/1.5 'Source Sans 3',system-ui,sans-serif;padding:16px}
+.frame{position:relative;background:var(--bg);border:1px solid var(--ink);min-height:calc(100vh - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));padding:28px 22px 120px}
+.frame::before{content:"";position:absolute;inset:5px -5px -5px 5px;border:1px solid var(--ink);pointer-events:none;opacity:.55}
+.c{position:absolute;width:14px;height:14px;border:1px solid var(--ink);background:var(--acc)}
+.c.a{left:-1px;top:-1px;transform:translate(-7px,-7px) translate(7px,7px)}
+.c.tl{left:-8px;top:-8px}.c.tr{right:-8px;top:-8px}.c.bl{left:-8px;bottom:-8px}.c.br{right:-8px;bottom:-8px}
+.v{position:absolute;left:50%;top:-9px;width:16px;height:16px;background:var(--acc);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.ring{position:absolute;left:50%;top:-80px;width:520px;height:520px;max-width:150%;border:1px solid var(--ink);border-radius:50%;opacity:.1;transform:translateX(-50%);pointer-events:none}
+.wrap{position:relative;max-width:1040px;margin:0 auto}
+.kop{text-align:center;padding:6px 0 14px}
+.kop svg,.kop img{height:64px;width:auto;color:var(--ink)}
+.kop .nm{font:500 clamp(22px,6vw,34px)/1.1 'Playfair Display',serif;letter-spacing:.4em;margin:10px -0.4em 0 0;text-transform:uppercase}
+.kop .tg{font-size:13px;color:var(--mute);margin-top:4px}
+nav{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--ink);margin:8px 0 22px;-webkit-overflow-scrolling:touch;justify-content:center}
+nav a{flex:0 0 auto;padding:9px 14px;color:var(--ink);text-decoration:none;font:500 14px 'Archivo Narrow',sans-serif;border-bottom:2px solid transparent;margin-bottom:-1px;letter-spacing:.02em}
+nav a[aria-current=page]{border-bottom-color:var(--acc);font-weight:600;color:var(--ink);box-shadow:0 2px 0 var(--acc)}
+nav a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.pg{position:absolute;right:0;top:-8px;font:500 13px 'Archivo Narrow',sans-serif;color:var(--mute)}
+h1{font:500 28px/1.15 'Archivo Narrow',sans-serif;letter-spacing:-.01em;margin:0;padding-bottom:8px;border-bottom:1px solid var(--ink);margin-bottom:18px}
+h2{font:500 18px 'Archivo Narrow',sans-serif;margin:0 0 10px}
+.m{display:none}.m.on{display:block}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.card{background:var(--panel);border:1px solid var(--ink);border-radius:4px;padding:14px}
+.big{font:500 26px 'Archivo Narrow',sans-serif;margin:2px 0 0;overflow-wrap:anywhere}
+.lbl,label{font-size:12px;color:var(--mute);display:block;margin-bottom:3px}
+input,select,textarea{width:100%;font:14px 'Source Sans 3',sans-serif;color:var(--ink);background:var(--panel);border:1px solid var(--ink);border-radius:4px;padding:8px 9px;min-width:0}
+textarea{resize:vertical;min-height:70px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.f{margin-bottom:12px}
+button{font:600 14px 'Source Sans 3',sans-serif;color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:4px;padding:8px 14px;cursor:pointer;min-height:38px}
+button.p{background:var(--acc)}
+button.s{padding:4px 9px;min-height:30px;font-size:12px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.stg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:18px}
+.col h3{font:500 15px 'Archivo Narrow',sans-serif;border-bottom:1px solid var(--ink);padding-bottom:4px;margin:0 0 8px}
+.col .card{margin-bottom:8px;padding:10px;font-size:13px}
+.late{background:var(--acc);padding:0 4px;border-radius:2px}
+.bars div{display:grid;grid-template-columns:90px 1fr 24px;gap:8px;align-items:center;margin:5px 0;font-size:13px}
+.bars i{display:block;height:8px;background:var(--ink)}
+.empty{color:var(--mute);padding:8px 0}
+.split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px;align-items:start}
+@media(max-width:820px){.split{grid-template-columns:1fr}}
+.paper{background:#FBF8F0;color:#231F20;border:1px solid var(--ink);padding:26px 24px;font:14px/1.7 'Source Serif 4',Georgia,serif;white-space:pre-wrap;overflow-wrap:anywhere;min-height:300px}
+.paper mark{background:#FFE45C;color:#231F20;padding:0 2px}
+.note{border:1px solid var(--ink);background:var(--panel);padding:8px 10px;font-size:13px;margin-bottom:12px;border-radius:4px}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font:500 12px 'Archivo Narrow',sans-serif;text-align:left;color:var(--mute)}
+.tbl td,.tbl th{border-bottom:1px solid var(--ink);padding:6px 4px;vertical-align:middle}
+.tbl input{padding:6px}
+.scroll{overflow-x:auto}
+.tot{max-width:340px;margin-left:auto;margin-top:12px}
+.tot div{display:flex;justify-content:space-between;padding:3px 0}
+.out{white-space:pre-wrap;background:var(--panel);border:1px solid var(--ink);border-radius:4px;padding:14px;min-height:80px}
+.sil{position:absolute;left:0;right:0;bottom:0;height:90px;overflow:hidden;pointer-events:none;color:var(--ink)}
+.sil svg{display:block;width:100%;height:100%}
+@media(max-width:600px){.sil{height:56px}.frame{padding:24px 14px 90px}body{padding:14px}.kop .nm{letter-spacing:.3em}}
+@media print{body *{visibility:hidden}.paper,.paper *{visibility:visible}.paper{position:absolute;left:0;top:0;width:100%;border:0}}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:4px;font-size:13px;display:none;z-index:9}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#EEA0A4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Ruang BD"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+<div class="frame">
+ <span class="v"></span><span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>
+ <div class="ring"></div>
+ <div class="wrap">
+  <header class="kop">
+   <div id="logo"></div>
+   <div class="nm" id="bn"></div>
+   <div class="tg" id="bt"></div>
+  </header>
+  <nav id="nav" aria-label="Modul"></nav>
+  <div style="position:relative"><span class="pg" id="pg">01</span>
+
+  <section class="m" id="m-ringkasan"><h1>Ringkasan</h1>
+   <div class="grid3">
+    <div class="card"><span class="lbl">Klien aktif</span><p class="big" id="s1">0</p></div>
+    <div class="card"><span class="lbl">Nilai pipeline berjalan</span><p class="big" id="s2">Rp 0</p></div>
+    <div class="card"><span class="lbl">Follow-up jatuh tempo</span><p class="big" id="s3">0</p></div>
+   </div>
+   <div class="split"><div><h2>Perlu ditindaklanjuti</h2><div id="due"></div></div>
+   <div><h2>Sebaran per tahap</h2><div class="bars" id="dist"></div></div></div>
+  </section>
+
+  <section class="m" id="m-pipeline"><h1>Pipeline klien</h1>
+   <div class="card"><div class="row">
+    <div class="f"><label for="p_inst">Nama institusi</label><input id="p_inst"></div>
+    <div class="f"><label for="p_pic">PIC</label><input id="p_pic"></div>
+    <div class="f"><label for="p_jab">Jabatan PIC</label><input id="p_jab"></div>
+    <div class="f"><label for="p_kon">Kontak (WA / email)</label><input id="p_kon"></div>
+    <div class="f"><label for="p_alm">Alamat</label><input id="p_alm"></div>
+    <div class="f"><label for="p_tahap">Tahap</label><select id="p_tahap"></select></div><div class="f"><label for="p_kat">Kategori klien</label><select id="p_kat"></select></div>
+    <div class="f"><label for="p_nilai">Perkiraan nilai (Rp)</label><input id="p_nilai" inputmode="numeric"></div>
+    <div class="f"><label for="p_fu">Tanggal follow-up</label><input id="p_fu" type="date"></div>
+   </div>
+   <div class="f"><label for="p_cat">Catatan</label><textarea id="p_cat"></textarea></div>
+   <div class="bar"><button class="p" id="p_add">Tambah klien</button><button id="p_demo">Muat 3 contoh klien</button></div></div>
+   <div class="stg" id="stg"></div>
+  </section>
+
+  <section class="m" id="m-surat"><h1>Surat</h1>
+   <div class="row" style="margin-bottom:10px">
+    <div class="f"><label for="s_kat">Kategori klien</label><select id="s_kat"></select></div><div class="f"><label for="s_jenis">Jenis surat</label><select id="s_jenis"></select></div>
+    <div class="f"><label for="s_klien">Ambil dari klien di pipeline (opsional)</label><select id="s_klien"></select></div>
+   </div>
+   <div class="card" style="margin-bottom:12px"><h2>Cap dan tanda tangan</h2><div class="row"><div class="f"><label for="t_mode">Pilihan</label><select id="t_mode"><option value="basah">A. Basah (cetak, TTD dan cap manual)</option><option value="digital">B. Digital (gambar TTD dan cap)</option><option value="draf">C. Draf tanpa tanda tangan</option></select></div><div class="f"><label for="t_nama">Nama penandatangan</label><input id="t_nama"></div><div class="f"><label for="t_jab">Jabatan</label><input id="t_jab"></div></div><div class="row" id="t_img"><div class="f"><label for="t_sign">Gambar tanda tangan (PNG)</label><input id="t_sign" type="file" accept="image/*"></div><div class="f"><label for="t_cap">Gambar cap (PNG)</label><input id="t_cap" type="file" accept="image/*"></div></div></div>
+<div class="note" id="s_note"></div>
+   <div class="split"><div><h2>Isian</h2><div id="s_form"></div></div>
+   <div><h2>Pratinjau</h2>
+    <div class="bar"><button class="p" id="s_copy">Salin</button><button id="s_edit" aria-pressed="false">Mode edit</button><button id="s_reset">Reset</button><button id="s_print">Cetak / PDF</button></div>
+    <div class="paper" id="s_prev" aria-live="polite"></div></div></div>
+  </section>
+
+  <section class="m" id="m-kalkulator"><h1>Kalkulator penawaran</h1>
+   <div class="scroll"><table class="tbl"><thead><tr><th>Deskripsi</th><th style="width:70px">Qty</th><th style="width:140px">Harga satuan</th><th style="width:130px">Subtotal</th><th style="width:60px"><span class="lbl" style="margin:0">Hapus</span></th></tr></thead><tbody id="k_rows"></tbody></table></div>
+   <div class="bar"><button id="k_add">Tambah baris</button><button class="p" id="k_copy">Salin ringkasan</button></div>
+   <div class="row" style="max-width:420px"><div class="f"><label for="k_disk">Diskon (%)</label><input id="k_disk" inputmode="decimal" value="0"></div><div class="f"><label for="k_ppn">PPN (%)</label><input id="k_ppn" inputmode="decimal" value="11"></div></div>
+   <div class="tot card" id="k_tot"></div>
+  </section>
+
+  <section class="m" id="m-followup"><h1>Follow-up</h1>
+   <div class="row" style="margin-bottom:10px">
+    <div class="f"><label for="f_sit">Situasi</label><select id="f_sit"></select></div>
+    <div class="f"><label for="f_kl">Klien</label><select id="f_kl"></select></div>
+    <div class="f"><label for="f_ch">Kanal</label><select id="f_ch"><option value="wa">WhatsApp</option><option value="em">Email</option></select></div>
+   </div>
+   <div class="out" id="f_out" aria-live="polite"></div>
+   <div class="bar"><button class="p" id="f_copy">Salin pesan</button></div>
+  </section>
+  </div>
+ </div>
+ <div class="sil" aria-hidden="true">
+  <svg viewBox="0 0 1200 90" preserveAspectRatio="xMidYMax slice" fill="currentColor">
+   <g stroke="currentColor" stroke-width="7" stroke-dasharray="2 2" fill="none"><path d="M96 34 L58 0M96 34 L140 2M96 34 L56 72M96 34 L138 70"/></g>
+   <path d="M76 88 L84 36 H112 L120 88Z"/><rect x="88" y="52" width="14" height="14" fill="var(--bg)"/>
+   <g><path d="M200 88V40l12-9 12 9v48zM232 88V40l12-9 12 9v48zM264 88V40l12-9 12 9v48z"/></g>
+   <path d="M340 88V34l24-22 24 22v54z"/><rect x="352" y="42" width="8" height="10" fill="var(--bg)"/><rect x="364" y="42" width="8" height="10" fill="var(--bg)"/>
+   <path d="M300 88c-14 0-16-16-6-28 4-6 6-14 6-22 0 8 2 16 6 22 10 12 8 28-6 28z" transform="translate(-30 6) scale(.7) translate(40 24)"/>
+   <path d="M170 88c-10 0-12-12-4-22 4-5 4-10 4-14 0 4 0 9 4 14 8 10 6 22-4 22z" transform="translate(-4 0)"/>
+   <rect x="40" y="86" width="1200" height="2"/>
+   <g><rect x="440" y="76" width="30" height="12"/><path d="M440 76l4-5 4 5M452 76l4-5 4 5M464 76l4-5 4 5" /></g>
+   <g><circle cx="530" cy="30" r="9"/><rect x="529" y="36" width="2" height="52"/><path d="M530 66c-14-6-14-18-8-24 2 8 6 14 8 18 2-4 6-10 8-18 6 6 6 18-8 24z"/></g>
+   <g><path d="M610 88c-8 0-10-10-3-18 3-4 3-8 3-12 0 4 0 8 3 12 7 8 5 18-3 18z"/></g>
+   <g><path d="M720 88V50c6-14 18-16 28-16h110c10 0 16 6 16 16v38z" transform="translate(110 0)"/><rect x="842" y="56" width="3" height="32" fill="var(--bg)"/><rect x="880" y="56" width="3" height="32" fill="var(--bg)"/><rect x="798" y="68" width="170" height="20" rx="6"/><circle cx="860" cy="84" r="8" fill="var(--bg)" stroke="currentColor" stroke-width="3"/><circle cx="930" cy="84" r="8" fill="var(--bg)" stroke="currentColor" stroke-width="3"/></g>
+   <g><rect x="690" y="40" width="2" height="48"/><path d="M691 66c-10-4-10-12-6-16 2 6 4 8 6 10 2-2 4-4 6-10 4 4 4 12-6 16z"/></g>
+   <g><rect x="1040" y="30" width="30" height="58"/><path d="M1034 30l21-16 21 16z"/><rect x="1086" y="50" width="22" height="38"/><path d="M1082 50l15-12 15 12z"/><rect x="1120" y="54" width="22" height="34"/><path d="M1116 54l15-12 15 12z"/></g>
+  </svg>
+ </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const BRAND={name:'Smakelijk',tagline:'Oleh-oleh ikonik Surabaya kolonial',logo:'',legal:'UD. Eden Bakery Cake',kota:'Surabaya'};
+const TAHAP=['Lead','Audiensi','Proposal','Negosiasi','MOU / PKS','Closing'];
+const KAT=[['toko','Mitra Toko'],['perusahaan','Perusahaan (gift / event)'],['lain','Instansi / Lainnya']];
+const katN=k=>(KAT.find(x=>x[0]===k)||['','Belum dikategorikan'])[1];
+const MODS=[['ringkasan','Ringkasan'],['pipeline','Pipeline'],['surat','Surat'],['kalkulator','Kalkulator'],['followup','Follow-up']];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rp=n=>'Rp '+Math.round(n||0).toLocaleString('id-ID');
+const num=s=>parseFloat(String(s).replace(/[^\d.,-]/g,'').replace(/\./g,'').replace(',','.'))||0;
+const mem={};
+const st={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):(mem[k]??d)}catch(e){return mem[k]??d}},set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const tglID=()=>new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',1600)}
+async function copy(t){try{await navigator.clipboard.writeText(t);toast('Tersalin')}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('Tersalin')}catch(_){toast('Gagal menyalin')}a.remove()}}
+
+/* ===== Merek ===== */
+$('#bn').textContent=BRAND.name;$('#bt').textContent=BRAND.tagline;
+$('#logo').innerHTML=BRAND.logo?'<img src="'+esc(BRAND.logo)+'" alt="'+esc(BRAND.name)+'" style="height:64px">':
+'<svg viewBox="0 0 110 80" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="12" y="34" width="14" height="12"/><rect x="48" y="34" width="14" height="12"/><rect x="84" y="34" width="14" height="12"/><path d="M26 46H12v0M26 46h22M62 40h22M55 34V10l12 6-12 5M12 46v12h14M98 46v12H84M6 66h24M80 66h24M6 71h24M80 71h24"/></svg>';
+
+/* ===== Navigasi ===== */
+$('#nav').innerHTML=MODS.map(m=>'<a href="#'+m[0]+'" data-k="'+m[0]+'">'+m[1]+'</a>').join('');
+function route(){let h=(location.hash||'#ringkasan').slice(1);let i=MODS.findIndex(m=>m[0]===h);if(i<0)i=0;
+ document.querySelectorAll('.m').forEach(e=>e.classList.toggle('on',e.id==='m-'+MODS[i][0]));
+ document.querySelectorAll('#nav a').forEach(a=>a.getAttribute('data-k')===MODS[i][0]?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));
+ $('#pg').textContent=String(i+1).padStart(2,'0');
+ ({ringkasan:rRingkasan,pipeline:rPipe,surat:rSuratInit,kalkulator:rKalk,followup:rFu})[MODS[i][0]]();}
+window.addEventListener('hashchange',route);
+
+/* ===== Data klien ===== */
+let clients=st.get('bd_clients',[]);
+const save=()=>st.set('bd_clients',clients);
+const aktif=c=>c.tahap!=='Closing';
+function rRingkasan(){
+ const a=clients.filter(aktif),t=todayISO(),due=a.filter(c=>c.fu&&c.fu<=t);
+ $('#s1').textContent=a.length;$('#s2').textContent=rp(a.reduce((s,c)=>s+num(c.nilai),0));$('#s3').textContent=due.length;
+ $('#due').innerHTML=due.length?due.map(c=>'<div class="card" style="margin-bottom:8px"><b>'+esc(c.inst)+'</b><br>'+esc(c.pic||'-')+' - '+esc(c.tahap)+'<br><span class="late">Follow-up '+esc(c.fu)+'</span></div>').join(''):'<p class="empty">Tidak ada follow-up yang lewat. Tambah klien di Pipeline.</p>';
+ const mx=Math.max(1,...TAHAP.map(s=>clients.filter(c=>c.tahap===s).length));
+ $('#dist').innerHTML=TAHAP.map(s=>{const n=clients.filter(c=>c.tahap===s).length;return '<div><span>'+s+'</span><span><i style="width:'+(n/mx*100)+'%"></i></span><span>'+n+'</span></div>'}).join('');
+}
+function rPipe(){
+ $('#p_tahap').innerHTML=TAHAP.map(s=>'<option>'+s+'</option>').join('');$('#p_kat').innerHTML=KAT.map(k=>'<option value="'+k[0]+'">'+k[1]+'</option>').join('');
+ $('#stg').innerHTML=TAHAP.map(s=>{const l=clients.filter(c=>c.tahap===s);return '<div class="col"><h3>'+s+' ('+l.length+')</h3>'+(l.map(c=>'<div class="card"><b>'+esc(c.inst)+'</b><br><span class="late">'+katN(c.kat)+'</span><br>'+esc(c.pic||'')+(c.jab?', '+esc(c.jab):'')+'<br>'+esc(c.kon||'')+'<br>'+rp(num(c.nilai))+'<br>Follow-up: '+esc(c.fu||'-')+(c.cat?'<br><i>'+esc(c.cat)+'</i>':'')+
+  '<div class="bar"><select aria-label="Pindah tahap '+esc(c.inst)+'" data-mv="'+c.id+'">'+TAHAP.map(x=>'<option'+(x===s?' selected':'')+'>'+x+'</option>').join('')+'</select><button class="s" data-del="'+c.id+'">Hapus</button></div></div>').join('')||'<p class="empty">Kosong</p>')+'</div>'}).join('');
+}
+$('#p_add').onclick=()=>{const inst=$('#p_inst').value.trim();if(!inst){toast('Isi nama institusi');$('#p_inst').focus();return}
+ clients.push({id:Date.now()+Math.random(),inst,pic:$('#p_pic').value,jab:$('#p_jab').value,kon:$('#p_kon').value,alm:$('#p_alm').value,kat:$('#p_kat').value,tahap:$('#p_tahap').value,nilai:$('#p_nilai').value,fu:$('#p_fu').value,cat:$('#p_cat').value});save();
+ ['inst','pic','jab','kon','alm','nilai','fu','cat'].forEach(k=>$('#p_'+k).value='');rPipe();toast('Klien ditambahkan')};
+$('#p_demo').onclick=()=>{const d=(n)=>{const x=new Date();x.setDate(x.getDate()+n);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+ const mk=(i,p,j,t,n,f,a)=>({id:Date.now()+Math.random(),kat:/Retail/.test(i)?'toko':/Dinas/.test(i)?'lain':'perusahaan',inst:i,pic:p,jab:j,kon:'08xx-xxxx-xxxx',alm:a,tahap:t,nilai:n,fu:d(f),cat:'Contoh data'});
+ clients.push(mk('Hotel Contoh Surabaya','Ibu Rina','Purchasing Manager','Proposal','45000000',-2,'Jl. Contoh No. 1, Surabaya'),mk('Dinas Contoh Kota','Bapak Hadi','Kepala Bidang','Audiensi','120000000',3,'Jl. Contoh Raya No. 5, Surabaya'),mk('PT Contoh Retail','Ibu Sari','Brand Manager','Negosiasi','80000000',-1,'Jl. Contoh Indah No. 9, Sidoarjo'));save();rPipe();toast('3 contoh dimuat')};
+$('#stg').addEventListener('change',e=>{const id=e.target.getAttribute('data-mv');if(!id)return;const c=clients.find(x=>String(x.id)===id);if(c){c.tahap=e.target.value;save();rPipe()}});
+$('#stg').addEventListener('click',e=>{const id=e.target.getAttribute('data-del');if(!id)return;if(confirm('Hapus klien ini?')){clients=clients.filter(x=>String(x.id)!==id);save();rPipe()}});
+
+/* ===== Surat ===== */
+const L=new Set(['profil_klien','ruang_lingkup','ruang_lingkup_pekerjaan','rincian_biaya','timeline','peserta','agenda','pembahasan','keputusan','tindak_lanjut','item','alamat','alamat_badan_usaha','syarat_pembayaran','jangka_waktu']);
+const BIG=new Set(['profil_klien','ruang_lingkup','ruang_lingkup_pekerjaan','rincian_biaya','timeline']);
+const F=(s)=>s.split(/,(?=\w+:)/).map(x=>{const i=x.indexOf(':');return [x.slice(0,i).trim(),x.slice(i+1).trim()]});
+const KOPSIGN='\n\nHormat kami,\n'+BRAND.legal+'\n\n\n(.....................)\nNama / Jabatan';
+const PIHAK='PIHAK PERTAMA: '+BRAND.legal+'\nPIHAK KEDUA: {{nama_legal}}, beralamat di {{alamat_badan_usaha}}, diwakili oleh {{nama_perwakilan}} selaku {{jabatan_perwakilan}}.';
+const TPL={
+ audiensi:{n:'Surat Audiensi',f:F('kota_tanggal:Kota, tanggal,nomor_surat:Nomor surat,penerima_nama:Nama penerima,penerima_jabatan:Jabatan penerima,institusi:Institusi,alamat:Alamat,profil_klien:Profil klien,singkatan:Singkatan institusi,hari_tanggal_pertemuan:Hari / tanggal pertemuan,pukul:Pukul,tempat:Tempat,narahubung:Narahubung'),
+ t:BRAND.legal.toUpperCase()+'\nSmakelijk - Oleh-oleh ikonik Surabaya kolonial\nSidotopo Wetan Mulia IV No.70, Sidotopo Wetan, Kec. Kenjeran, Surabaya, Jawa Timur 60128\n_______________________________________________\n\n{{kota_tanggal}}\n\nNomor     : {{nomor_surat}}\nLampiran  : -\nPerihal   : Permohonan Audiensi\n\nYth.\n{{penerima_nama}}\n{{penerima_jabatan}}\n{{institusi}}\n{{alamat}}\n\nDengan hormat,\n\nPerkenalkan, kami dari '+BRAND.legal+' dengan merek Smakelijk, bisnis bakery yang mengusung misi melestarikan warisan rasa khas Belanda dengan sentuhan lokal dan tampilan kekinian.\n\nBerdasarkan informasi yang kami peroleh, {{profil_klien}} Kami melihat adanya peluang kerja sama yang dapat saling menguntungkan antara '+BRAND.legal+' dan {{singkatan}}.\n\nSehubungan dengan hal tersebut, kami bermaksud memohon waktu Bapak/Ibu untuk beraudiensi guna memperkenalkan produk kami dan membahas kemungkinan kerja sama. Adapun waktu dan tempat yang kami usulkan adalah:\n\nHari / tanggal : {{hari_tanggal_pertemuan}}\nPukul          : {{pukul}}\nTempat         : {{tempat}}\n\nApabila waktu tersebut kurang berkenan, kami bersedia menyesuaikan dengan jadwal Bapak/Ibu. Untuk koordinasi lebih lanjut, Bapak/Ibu dapat menghubungi {{narahubung}}.\n\nDemikian surat ini kami sampaikan. Atas perhatian dan kesempatan yang diberikan, kami ucapkan terima kasih.'+KOPSIGN},
+ mom:{n:'MoM',f:F('judul:Judul rapat,hari_tanggal:Hari / tanggal,waktu:Waktu,tempat:Tempat,peserta:Peserta,agenda:Agenda,pembahasan:Pembahasan,keputusan:Keputusan,tindak_lanjut:Tindak lanjut (satu per baris: tugas | PIC | tenggat)'),
+ t:'[KERANGKA SEMENTARA]\n\nNOTULEN RAPAT (MoM)\n{{judul}}\n\nHari / tanggal : {{hari_tanggal}}\nWaktu : {{waktu}}\nTempat : {{tempat}}\n\nPeserta:\n{{peserta}}\n\nAgenda:\n{{agenda}}\n\nPembahasan:\n{{pembahasan}}\n\nKeputusan:\n{{keputusan}}\n\nTindak lanjut (tugas | PIC | tenggat):\n{{tindak_lanjut}}\n\nDicatat oleh:\n\n(.....................)'},
+ quotation:{n:'Quotation',f:F('nomor:Nomor,tanggal:Tanggal,nama_klien:Nama klien,alamat:Alamat,item:Item (satu per baris: deskripsi | qty | harga satuan),ppn_persen:PPN (%),masa_berlaku:Masa berlaku,syarat_pembayaran:Syarat pembayaran'),
+ t:'[KERANGKA SEMENTARA]\n\n'+BRAND.legal+'\n\nQUOTATION / PENAWARAN HARGA\nNomor : {{nomor}}\nTanggal : {{tanggal}}\n\nKepada Yth.\n{{nama_klien}}\n{{alamat}}\n\nDengan hormat, berikut penawaran kami:\n\n{{tabel_item}}\n\nSubtotal : {{subtotal}}\nPPN : {{ppn}}\nTotal : {{total}}\n\nMasa berlaku : {{masa_berlaku}}\nSyarat pembayaran : {{syarat_pembayaran}}\n\nDemikian penawaran ini kami sampaikan. Terima kasih.'+KOPSIGN},
+ mou:{n:'MOU',legal:1,f:F('nama_project:Nama project,nama_legal:Nama legal mitra,nomor_narasio:Nomor surat pihak pertama,nomor_mitra:Nomor surat pihak kedua,tanggal_ttd:Tanggal tanda tangan,alamat_badan_usaha:Alamat badan usaha,nama_perwakilan:Nama perwakilan,jabatan_perwakilan:Jabatan perwakilan,ruang_lingkup:Ruang lingkup,jangka_waktu:Jangka waktu'),
+ t:'[KERANGKA SEMENTARA]\n\nNOTA KESEPAHAMAN (MOU)\n{{nama_project}}\nNomor: {{nomor_narasio}} / {{nomor_mitra}}\n\nPada tanggal {{tanggal_ttd}}, para pihak yang bertanda tangan di bawah ini:\n\n'+PIHAK+'\n\nPara pihak sepakat menjalin kerja sama dengan ruang lingkup sebagai berikut:\n{{ruang_lingkup}}\n\nJangka waktu kesepakatan: {{jangka_waktu}}.\n\nDemikian nota kesepahaman ini dibuat dan ditandatangani oleh para pihak.\n\nPIHAK PERTAMA                    PIHAK KEDUA\n\n\n(.....................)                 {{nama_perwakilan}}'},
+ pks:{n:'PKS',legal:1,f:F('nama_project:Nama project,nama_legal:Nama legal mitra,nomor_narasio:Nomor PKS pihak pertama,nomor_mitra:Nomor PKS pihak kedua,tanggal_ttd:Tanggal tanda tangan,alamat_badan_usaha:Alamat badan usaha,nama_perwakilan:Nama perwakilan,jabatan_perwakilan:Jabatan perwakilan,ruang_lingkup_pekerjaan:Ruang lingkup pekerjaan,timeline:Timeline,tanggal_berakhir:Tanggal berakhir,rincian_biaya:Rincian biaya,divisi_mitra:Divisi mitra,pic_narasio:PIC pihak pertama,pic_mitra:PIC pihak kedua'),
+ t:'[KERANGKA SEMENTARA]\n\nPERJANJIAN KERJA SAMA (PKS)\n{{nama_project}}\nNomor: {{nomor_narasio}} / {{nomor_mitra}}\n\nPada tanggal {{tanggal_ttd}}, para pihak:\n\n'+PIHAK+'\n\nPasal 1 - Ruang Lingkup\n{{ruang_lingkup_pekerjaan}}\n\nPasal 2 - Jangka Waktu\nTimeline: {{timeline}}. Perjanjian berakhir pada {{tanggal_berakhir}}.\n\nPasal 3 - Hak dan Kewajiban\n(isi sesuai SOP kantor)\n\nPasal 4 - Biaya dan Pembayaran\n{{rincian_biaya}}\n\nPasal 5 - Kerahasiaan\n(isi sesuai SOP kantor)\n\nPasal 6 - Keadaan Memaksa\n(isi sesuai SOP kantor)\n\nPasal 7 - Perubahan\n(isi sesuai SOP kantor)\n\nPasal 8 - Pengakhiran\n(isi sesuai SOP kantor)\n\nPasal 9 - Penyelesaian Perselisihan\n(isi sesuai SOP kantor)\n\nPasal 10 - Penutup\nPIC pihak pertama: {{pic_narasio}}. PIC pihak kedua ({{divisi_mitra}}): {{pic_mitra}}.\n\nPIHAK PERTAMA                    PIHAK KEDUA\n\n\n(.....................)                 {{nama_perwakilan}}'}
+};
+const SAMPLE={profil_klien:'{institusi} adalah institusi yang bergerak di bidangnya dan dikenal aktif menjalin kemitraan dengan pelaku usaha lokal.',ruang_lingkup:'[Contoh] Kerja sama penyediaan produk bakery dan oleh-oleh khas Belanda untuk kebutuhan {institusi}.',ruang_lingkup_pekerjaan:'[Contoh] 1. Penyediaan produk sesuai pesanan.\n2. Pengemasan dan pengiriman.\n3. Pelaporan berkala.',rincian_biaya:'[Contoh] Biaya pekerjaan sebesar Rp ........ (........) dibayar bertahap: 50% saat penandatanganan, 50% setelah pekerjaan selesai.',timeline:'[Contoh] Persiapan 1 minggu, pelaksanaan 1 bulan, evaluasi 1 minggu.'};
+let cur='audiensi',kat='toko';const V={},ED={edited:false};
+const TK='(.....................)';
+const KATS={audiensi:['toko','perusahaan','lain'],konsinyasi:['toko'],tukar:['toko'],moutoko:['toko'],gift:['perusahaan'],pksgift:['perusahaan'],mom:['toko','perusahaan','lain'],quotation:['toko','perusahaan','lain'],mou:['perusahaan','lain'],pks:['perusahaan','lain']};
+const HDR=BRAND.legal.toUpperCase()+'\nSmakelijk - Oleh-oleh ikonik Surabaya kolonial\nSidotopo Wetan Mulia IV No.70, Sidotopo Wetan, Kec. Kenjeran, Surabaya, Jawa Timur 60128\n_______________________________________________\n\n';
+const YTH='Yth.\n{{penerima_nama}}\n{{penerima_jabatan}}\n{{institusi}}\n{{alamat}}\n\nDengan hormat,\n\n';
+const PERK='Perkenalkan, kami dari '+BRAND.legal+' dengan merek Smakelijk, bisnis bakery yang mengusung misi melestarikan warisan rasa khas Belanda dengan sentuhan lokal dan tampilan kekinian.\n\n';
+const TUTUP='\n\nDemikian surat ini kami sampaikan. Atas perhatian dan kesempatan yang diberikan, kami ucapkan terima kasih.';
+const TTP2='\n\nPIHAK PERTAMA\n'+TK+'\n\nPIHAK KEDUA\n\n\n{{nama_perwakilan}}\n{{jabatan_perwakilan}}';
+['gambaran_toko','ketentuan_skema','paket','isi_paket','kontribusi_mitra','produk_smakelijk','pembayaran'].forEach(k=>L.add(k));
+Object.assign(TPL,{
+ konsinyasi:{n:'Penawaran Konsinyasi (Toko)',f:F('kota_tanggal:Kota dan tanggal,nomor_surat:Nomor surat,penerima_nama:Nama penerima,penerima_jabatan:Jabatan penerima,institusi:Nama toko,alamat:Alamat toko,gambaran_toko:Gambaran singkat toko,margin:Margin toko (misal 30%),periode_bayar:Periode pembayaran,hari_tanggal_pertemuan:Hari dan tanggal pertemuan,narahubung:Narahubung'),
+ t:HDR+'{{kota_tanggal}}\n\nNomor     : {{nomor_surat}}\nLampiran  : Profil produk dan daftar harga\nPerihal   : Penawaran Kerja Sama Konsinyasi\n\n'+YTH+PERK+'Kami mengenal {{institusi}} sebagai {{gambaran_toko}}. Kami percaya produk Smakelijk cocok melengkapi etalase Bapak/Ibu, dan kami menawarkan kerja sama konsinyasi (titip jual) sebagai berikut:\n\n1. Smakelijk menitipkan produk di toko Bapak/Ibu dengan jenis dan jumlah awal sesuai kesepakatan.\n2. Toko hanya membayar produk yang terjual, tanpa modal stok di awal.\n3. Margin toko sebesar {{margin}} dari harga jual ke konsumen, sesuai daftar harga terlampir.\n4. Pembayaran dilakukan {{periode_bayar}} berdasarkan penghitungan stok bersama.\n5. Produk yang tidak terjual atau mendekati kedaluwarsa ditarik dan diganti oleh Smakelijk.\n6. Smakelijk menyediakan materi tampilan dan branding sesuai kebutuhan toko.\n7. Setiap serah terima dan penghitungan stok dicatat dalam nota yang ditandatangani kedua pihak.\n\nKami mohon kesempatan bertemu dan menyampaikan contoh produk pada {{hari_tanggal_pertemuan}}. Narahubung kami: {{narahubung}}.'+TUTUP+KOPSIGN},
+ tukar:{n:'Penawaran Tukar Guling (Toko)',f:F('kota_tanggal:Kota dan tanggal,nomor_surat:Nomor surat,penerima_nama:Nama penerima,penerima_jabatan:Jabatan penerima,institusi:Nama toko atau usaha,alamat:Alamat,produk_smakelijk:Yang disediakan Smakelijk,nilai_smakelijk:Nilai dari Smakelijk (Rp),kontribusi_mitra:Yang disediakan mitra (produk / ruang / publikasi),selisih:Penyelesaian selisih nilai,periode:Periode kerja sama,hari_tanggal_pertemuan:Hari dan tanggal diskusi,narahubung:Narahubung'),
+ t:HDR+'{{kota_tanggal}}\n\nNomor     : {{nomor_surat}}\nLampiran  : Profil produk dan daftar harga\nPerihal   : Penawaran Kerja Sama Tukar Guling\n\n'+YTH+PERK+'Kami melihat {{institusi}} dan Smakelijk memiliki pasar yang saling melengkapi, sehingga kami mengajukan kerja sama tukar guling (pertukaran nilai) sebagai berikut:\n\n1. Smakelijk menyediakan {{produk_smakelijk}} senilai Rp {{nilai_smakelijk}} berdasarkan harga jual.\n2. {{institusi}} menyediakan {{kontribusi_mitra}} dengan nilai yang setara.\n3. Nilai kedua sisi disepakati bersama dan dicatat tertulis sebelum kerja sama berjalan.\n4. Selisih nilai pada akhir periode diselesaikan dengan {{selisih}}.\n5. Periode kerja sama {{periode}}, dengan evaluasi bersama di tengah periode.\n6. Masing-masing pihak menjaga kualitas dan keamanan produk yang ditukarkan.\n\nKami mohon kesempatan berdiskusi pada {{hari_tanggal_pertemuan}}. Narahubung kami: {{narahubung}}.'+TUTUP+KOPSIGN},
+ moutoko:{n:'MOU Kemitraan Toko',legal:1,f:F('skema:Skema (Konsinyasi atau Tukar Guling),nomor_narasio:Nomor pihak pertama,nomor_mitra:Nomor pihak kedua,hari_tanggal:Hari dan tanggal,nama_legal:Nama legal mitra,alamat_badan_usaha:Alamat mitra,nama_perwakilan:Nama perwakilan,jabatan_perwakilan:Jabatan perwakilan,ketentuan_skema:Ketentuan skema (margin / nilai tukar),pembayaran:Pembayaran dan penyelesaian nilai,jangka_waktu:Jangka waktu,kota_pn:Kota pengadilan negeri'),
+ t:'NOTA KESEPAHAMAN (MOU)\nKEMITRAAN TOKO: {{skema}}\nNomor: {{nomor_narasio}} / {{nomor_mitra}}\n\nPada hari ini, {{hari_tanggal}}, para pihak:\n\n'+PIHAK+'\n\nPasal 1 - Maksud dan Tujuan\nKerja sama penjualan produk Smakelijk melalui jaringan PIHAK KEDUA secara saling menguntungkan.\n\nPasal 2 - Skema Kerja Sama\n{{ketentuan_skema}}\n\nPasal 3 - Hak dan Kewajiban\n1. PIHAK PERTAMA menyediakan produk yang layak konsumsi, berlabel jelas, dan sesuai daftar yang disepakati.\n2. PIHAK KEDUA menyimpan dan menampilkan produk dengan baik, menjaga kebersihan, dan tidak menjual produk melewati masa kedaluwarsa.\n3. Serah terima dan penghitungan stok dicatat dalam nota yang ditandatangani bersama.\n\nPasal 4 - Harga dan Pembayaran\n{{pembayaran}}\n\nPasal 5 - Retur dan Kualitas\nProduk yang tidak terjual, rusak, atau mendekati kedaluwarsa ditarik dan diganti sesuai kesepakatan. Kerusakan akibat kelalaian penyimpanan menjadi tanggung jawab PIHAK KEDUA.\n\nPasal 6 - Jangka Waktu\n{{jangka_waktu}}\n\nPasal 7 - Kerahasiaan\nKedua pihak menjaga kerahasiaan harga, margin, dan informasi bisnis, kecuali diwajibkan oleh hukum.\n\nPasal 8 - Perubahan dan Pengakhiran\nPerubahan dilakukan tertulis atas persetujuan kedua pihak. Pengakhiran dilakukan dengan pemberitahuan tertulis dan setelah seluruh kewajiban pembayaran dan retur diselesaikan.\n\nPasal 9 - Penyelesaian Perselisihan\nDiselesaikan secara musyawarah; bila tidak tercapai, domisili hukum di Pengadilan Negeri {{kota_pn}}.\n\nPasal 10 - Penutup\nDibuat rangkap dua bermeterai cukup, masing-masing berkekuatan hukum sama.'+TTP2},
+ gift:{n:'Penawaran Gift Event (Perusahaan)',f:F('kota_tanggal:Kota dan tanggal,nomor_surat:Nomor surat,penerima_nama:Nama penerima,penerima_jabatan:Jabatan atau divisi,institusi:Nama perusahaan,alamat:Alamat,nama_event:Nama event,tanggal_event:Tanggal event,paket:Paket (satu per baris - nama | isi | minimum | harga),est_jumlah:Estimasi jumlah paket,batas_konfirmasi:Batas konfirmasi (hari kerja sebelum event),dp_persen:Uang muka (%),berlaku_sampai:Harga berlaku sampai,hari_tanggal_pertemuan:Hari dan tanggal presentasi,narahubung:Narahubung'),
+ t:HDR+'{{kota_tanggal}}\n\nNomor     : {{nomor_surat}}\nLampiran  : Katalog paket gift dan simulasi harga\nPerihal   : Penawaran Smakelijk sebagai Gift pada {{nama_event}}\n\n'+YTH+'Selamat atas rencana penyelenggaraan {{nama_event}} pada {{tanggal_event}}. Kami dari '+BRAND.legal+' dengan merek Smakelijk, bisnis bakery yang menghadirkan kembali kehangatan rasa khas Belanda dengan sentuhan lokal dan tampilan kekinian.\n\nKami menawarkan Smakelijk sebagai gift untuk tamu {{nama_event}}. Bagi {{institusi}}, gift ini memberi:\n1. Kesan personal dan berkarakter, dengan cerita Surabaya kolonial, bukan gift generik.\n2. Branding bersama: kemasan, label, atau kartu ucapan memuat logo dan pesan {{institusi}} sesuai persetujuan.\n3. Fleksibilitas jumlah, isi, dan tampilan paket sesuai anggaran dan profil tamu.\n4. Kemudahan: produksi, pengemasan, dan pengiriman ke lokasi event kami tangani.\n\nPilihan paket (nama | isi | minimum | harga per paket):\n{{paket}}\n\nKetentuan:\n1. Estimasi jumlah gift: {{est_jumlah}} paket.\n2. Pemesanan dikonfirmasi paling lambat {{batas_konfirmasi}} hari kerja sebelum event.\n3. Pembayaran: uang muka {{dp_persen}}%, pelunasan sebelum pengiriman.\n4. Contoh produk (sampling) dapat kami sediakan sebelum keputusan.\n5. Harga berlaku sampai {{berlaku_sampai}}.\n\nKami mohon kesempatan presentasi singkat pada {{hari_tanggal_pertemuan}}. Narahubung kami: {{narahubung}}.'+TUTUP+KOPSIGN},
+ pksgift:{n:'Perjanjian Gift Event (Perusahaan)',legal:1,f:F('nama_event:Nama event,nomor_narasio:Nomor pihak pertama,nomor_mitra:Nomor pihak kedua,hari_tanggal:Hari dan tanggal,nama_legal:Nama legal perusahaan,alamat_badan_usaha:Alamat perusahaan,nama_perwakilan:Nama perwakilan,jabatan_perwakilan:Jabatan perwakilan,jumlah_paket:Jumlah paket,isi_paket:Isi paket,harga_total:Total harga (Rp),dp_persen:Uang muka (%),tgl_dp:Batas uang muka,tgl_lunas:Batas pelunasan,rekening:Rekening pembayaran,tanggal_event:Tanggal event,lokasi:Lokasi pengiriman,batas_perubahan:Batas perubahan jumlah (hari sebelum event),kota_pn:Kota pengadilan negeri'),
+ t:'PERJANJIAN PENYEDIAAN GIFT EVENT\n{{nama_event}}\nNomor: {{nomor_narasio}} / {{nomor_mitra}}\n\nPada hari ini, {{hari_tanggal}}, para pihak:\n\n'+PIHAK+'\n\nPasal 1 - Objek\nPIHAK PERTAMA menyediakan {{jumlah_paket}} paket gift Smakelijk berisi {{isi_paket}} untuk {{nama_event}} pada {{tanggal_event}} di {{lokasi}}.\n\nPasal 2 - Harga dan Pembayaran\nTotal Rp {{harga_total}}. Uang muka {{dp_persen}}% paling lambat {{tgl_dp}}; pelunasan paling lambat {{tgl_lunas}}. Pembayaran ke {{rekening}}.\n\nPasal 3 - Produksi dan Pengiriman\nPIHAK PERTAMA memproduksi, mengemas, dan mengirim ke {{lokasi}} sebelum event. Risiko pengiriman ditanggung PIHAK PERTAMA sampai paket diterima.\n\nPasal 4 - Kustomisasi Branding\nPIHAK KEDUA menyerahkan materi (logo, pesan kartu, panduan tampilan) tepat waktu. PIHAK PERTAMA menyampaikan contoh desain untuk disetujui tertulis sebelum produksi.\n\nPasal 5 - Perubahan Jumlah\nPerubahan jumlah paling lambat {{batas_perubahan}} hari sebelum event; setelahnya berlaku jumlah terakhir yang disetujui.\n\nPasal 6 - Kualitas dan Penggantian\nProduk layak konsumsi dan sesuai spesifikasi. Produk rusak atau cacat akibat produksi atau pengiriman diganti atau diperbaiki bila dilaporkan tepat waktu.\n\nPasal 7 - Pembatalan\nPembatalan oleh PIHAK KEDUA setelah batas konfirmasi dikenakan biaya sesuai kesepakatan tertulis. Pembatalan oleh PIHAK PERTAMA mewajibkan pengembalian seluruh pembayaran.\n\nPasal 8 - Keadaan Memaksa\nKeterlambatan akibat keadaan di luar kendali para pihak bukan pelanggaran, dengan kewajiban memberi tahu secepatnya.\n\nPasal 9 - Penyelesaian Perselisihan\nMusyawarah; bila tidak tercapai, domisili hukum di Pengadilan Negeri {{kota_pn}}.\n\nPasal 10 - Penutup\nDibuat rangkap dua bermeterai cukup, masing-masing berkekuatan hukum sama.'+TTP2}
+});
+function fillJenis(){$('#s_kat').innerHTML=KAT.map(k=>'<option value="'+k[0]+'"'+(k[0]===kat?' selected':'')+'>'+k[1]+'</option>').join('');const ks=Object.keys(TPL).filter(k=>KATS[k]&&KATS[k].includes(kat));if(!ks.includes(cur))cur=ks[0];$('#s_jenis').innerHTML=ks.map(k=>'<option value="'+k+'"'+(k===cur?' selected':'')+'>'+TPL[k].n+'</option>').join('')}
+$('#s_kat').onchange=e=>{kat=e.target.value;fillJenis();buildForm()};
+const TT=Object.assign({mode:'basah',nama:'',jab:''},st.get('bd_ttd',{}));TT.sign='';TT.cap='';
+const saveT=()=>st.set('bd_ttd',{mode:TT.mode,nama:TT.nama,jab:TT.jab});
+function syncT(){$('#t_mode').value=TT.mode;$('#t_nama').value=TT.nama;$('#t_jab').value=TT.jab;$('#t_img').style.display=TT.mode==='digital'?'':'none'}
+function ttdHtml(T){const im=s=>s?'<img src="'+s+'" alt="" style="max-height:70px;max-width:45%;vertical-align:bottom">':'';if(TT.mode==='draf')return '(Draf - belum ditandatangani)';if(TT.mode==='digital')return (TT.sign||TT.cap)?im(TT.cap)+im(TT.sign):'<mark>[unggah gambar tanda tangan dan cap]</mark>';return '<span style="display:inline-block;height:64px"></span>'+(T.legal?'\n[tempel meterai Rp10.000]':'')+'\n[cap basah]'}
+$('#t_mode').onchange=e=>{TT.mode=e.target.value;saveT();syncT();render()};
+$('#t_nama').oninput=e=>{TT.nama=e.target.value;saveT();render()};
+$('#t_jab').oninput=e=>{TT.jab=e.target.value;saveT();render()};
+[['t_sign','sign'],['t_cap','cap']].forEach(([id,k])=>{$('#'+id).onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{TT[k]=r.result;render()};r.readAsDataURL(f)}});
+$('#s_print').onclick=()=>window.print();
+syncT();
+const vals=()=>V[cur]||(V[cur]={kota_tanggal:BRAND.kota+', '+tglID(),tanggal:tglID(),ppn_persen:'11'});
+function rSuratInit(){
+ fillJenis();
+ $('#s_klien').innerHTML='<option value="">- tidak dipakai -</option>'+clients.map(c=>'<option value="'+c.id+'">'+esc(c.inst)+'</option>').join('');
+ buildForm();}
+function buildForm(){const T=TPL[cur],v=vals();ED.edited=false;
+ $('#s_note').innerHTML=(T.legal?'<b>Perlu ditinjau legal sebelum dikirim.</b> ':'')+'Teks tetap berasal dari kerangka sementara; hanya bagian bersorot kuning yang diisi.';
+ $('#s_form').innerHTML=T.f.map(([k,l])=>{const long=L.has(k);const id='sf_'+k;return '<div class="f"><label for="'+id+'">'+esc(l)+'</label>'+(long?'<textarea id="'+id+'" data-k="'+k+'">':'<input id="'+id+'" data-k="'+k+'" value="'+esc(v[k]||'')+'">')+(long?esc(v[k]||'')+'</textarea>':'')+(BIG.has(k)?'<button class="s" type="button" data-h="'+k+'" style="margin-top:4px">Bantu tulis</button>':'')+'</div>'}).join('');
+ render();}
+function compute(v){const o=Object.assign({},v);
+ if(cur==='quotation'){let sub=0;const rows=(v.item||'').split('\n').filter(x=>x.trim()).map(r=>{const p=r.split('|').map(s=>s.trim());const q=num(p[1]||'1'),h=num(p[2]);sub+=q*h;return p[0]+'  |  '+q+' x '+rp(h)+' = '+rp(q*h)});
+  const ppn=sub*(num(v.ppn_persen||'11'))/100;o.tabel_item=rows.join('\n');o.subtotal=sub?rp(sub):'';o.ppn=sub?rp(ppn):'';o.total=sub?rp(sub+ppn):'';}
+ return o}
+function render(){if(ED.edited)return;const T=TPL[cur],o=compute(vals());const lab={};T.f.forEach(([k,l])=>lab[k]=l);Object.assign(lab,{tabel_item:'tabel item',subtotal:'subtotal',ppn:'PPN',total:'total'});
+ $('#s_prev').innerHTML=esc(T.t).replace(/\{\{(\w+)\}\}/g,(m,k)=>o[k]?esc(o[k]):'<mark>['+esc(lab[k]||k)+']</mark>').replace(/\(\.{21}\)/g,()=>ttdHtml(T)).replace('Nama / Jabatan',()=>TT.nama?esc(TT.nama)+(TT.jab?' / '+esc(TT.jab):''):'<mark>[nama / jabatan penandatangan]</mark>');}
+$('#s_form').addEventListener('input',e=>{const k=e.target.getAttribute('data-k');if(!k)return;vals()[k]=e.target.value;render()});
+$('#s_form').addEventListener('click',e=>{const k=e.target.getAttribute('data-h');if(!k)return;const v=vals();const inst=v.institusi||v.nama_legal||'mitra';v[k]=SAMPLE[k].replace('{institusi}',inst);const el=document.getElementById('sf_'+k);if(el)el.value=v[k];render();toast('Contoh teks diisi, silakan sesuaikan')});
+$('#s_jenis').onchange=e=>{cur=e.target.value;buildForm()};
+$('#s_klien').onchange=e=>{const c=clients.find(x=>String(x.id)===e.target.value);if(!c)return;if(c.kat&&c.kat!==kat){kat=c.kat;fillJenis();buildForm()}const v=vals(),map={institusi:c.inst,penerima_nama:c.pic,penerima_jabatan:c.jab,alamat:c.alm,nama_klien:c.inst,nama_legal:c.inst,alamat_badan_usaha:c.alm,nama_perwakilan:c.pic,jabatan_perwakilan:c.jab};
+ TPL[cur].f.forEach(([k])=>{if(map[k]){v[k]=map[k];const el=document.getElementById('sf_'+k);if(el)el.value=map[k]}});render()};
+$('#s_copy').onclick=()=>copy($('#s_prev').innerText);
+$('#s_edit').onclick=()=>{const p=$('#s_prev'),on=p.contentEditable!=='true';p.contentEditable=on;$('#s_edit').setAttribute('aria-pressed',on);$('#s_edit').textContent=on?'Selesai edit':'Mode edit';if(on)p.focus()};
+$('#s_prev').addEventListener('input',()=>{ED.edited=true});
+$('#s_reset').onclick=()=>{ED.edited=false;delete V[cur];buildForm();$('#s_prev').contentEditable=false;$('#s_edit').textContent='Mode edit';$('#s_edit').setAttribute('aria-pressed','false')};
+
+/* ===== Kalkulator ===== */
+let rows=[{d:'',q:1,h:0}];
+function rKalk(){$('#k_rows').innerHTML=rows.map((r,i)=>'<tr><td><input aria-label="Deskripsi baris '+(i+1)+'" data-i="'+i+'" data-f="d" value="'+esc(r.d)+'"></td><td><input aria-label="Qty baris '+(i+1)+'" inputmode="numeric" data-i="'+i+'" data-f="q" value="'+r.q+'"></td><td><input aria-label="Harga satuan baris '+(i+1)+'" inputmode="numeric" data-i="'+i+'" data-f="h" value="'+(r.h||'')+'"></td><td id="ks'+i+'">'+rp(r.q*r.h)+'</td><td><button class="s" data-r="'+i+'">Hapus</button></td></tr>').join('');kTot()}
+function kVals(){const sub=rows.reduce((s,r)=>s+(num(r.q)*num(r.h)),0),d=sub*num($('#k_disk').value)/100,dpp=sub-d,p=dpp*num($('#k_ppn').value)/100;return{sub,d,p,tot:dpp+p}}
+function kTot(){const t=kVals();$('#k_tot').innerHTML='<div><span>Subtotal</span><span>'+rp(t.sub)+'</span></div><div><span>Diskon</span><span>- '+rp(t.d)+'</span></div><div><span>PPN</span><span>'+rp(t.p)+'</span></div><div><b>Total akhir</b><b>'+rp(t.tot)+'</b></div>'}
+$('#k_rows').addEventListener('input',e=>{const i=e.target.getAttribute('data-i');if(i===null)return;const f=e.target.getAttribute('data-f');rows[i][f]=f==='d'?e.target.value:num(e.target.value);const c=document.getElementById('ks'+i);if(c)c.textContent=rp(rows[i].q*rows[i].h);kTot()});
+$('#k_rows').addEventListener('click',e=>{const i=e.target.getAttribute('data-r');if(i===null)return;rows.splice(i,1);if(!rows.length)rows=[{d:'',q:1,h:0}];rKalk()});
+$('#k_add').onclick=()=>{rows.push({d:'',q:1,h:0});rKalk()};
+$('#k_disk').oninput=$('#k_ppn').oninput=kTot;
+$('#k_copy').onclick=()=>{const t=kVals();copy('Ringkasan Penawaran\n'+rows.filter(r=>r.d||r.h).map(r=>'- '+(r.d||'Item')+': '+r.q+' x '+rp(r.h)+' = '+rp(r.q*r.h)).join('\n')+'\nSubtotal: '+rp(t.sub)+'\nDiskon '+$('#k_disk').value+'%: -'+rp(t.d)+'\nPPN '+$('#k_ppn').value+'%: '+rp(t.p)+'\nTotal: '+rp(t.tot))};
+
+/* ===== Follow-up ===== */
+const SIT={audiensi:['Setelah audiensi','Terima kasih atas waktu dan sambutan hangat dalam pertemuan {tgl}. Kami senang bisa berdiskusi tentang peluang kerja sama dengan {inst}. Jika berkenan, kami siap menyiapkan langkah berikutnya sesuai arahan Bapak/Ibu.'],
+ proposal:['Setelah kirim proposal','Kami telah mengirimkan proposal kerja sama untuk {inst}. Mohon konfirmasi apakah dokumennya sudah diterima, dan kami terbuka untuk menjelaskan bagian mana pun yang perlu diperjelas.'],
+ belum:['Belum dibalas','Kami ingin menindaklanjuti pesan kami sebelumnya terkait kerja sama dengan {inst}. Kami memahami jadwal Bapak/Ibu padat; kapan kiranya kami bisa mendapat kabar atau menjadwalkan waktu singkat untuk berdiskusi?'],
+ harga:['Negosiasi harga','Terima kasih atas masukan terkait penawaran untuk {inst}. Kami sudah meninjau kembali dan ingin mendiskusikan skema yang paling sesuai bagi kedua pihak. Kapan kami bisa berdiskusi singkat?'],
+ ttd:['Minta tanda tangan','Dokumen kerja sama untuk {inst} sudah siap. Mohon bantuan untuk proses peninjauan dan tanda tangannya. Kami siap membantu bila ada yang perlu disesuaikan.'],
+ terima:['Ucapan terima kasih','Terima kasih atas kepercayaan {inst} kepada kami. Kami berkomitmen menjaga kualitas dan komunikasi yang baik selama kerja sama berjalan.']};
+function rFu(){const s=$('#f_sit'),k=$('#f_kl'),a=s.value,b=k.value;s.innerHTML=Object.keys(SIT).map(x=>'<option value="'+x+'">'+SIT[x][0]+'</option>').join('');k.innerHTML='<option value="">- tanpa klien -</option>'+clients.map(c=>'<option value="'+c.id+'">'+esc(c.inst)+'</option>').join('');if(a)s.value=a;if(b)k.value=b;fuOut()}
+function fuOut(){const c=clients.find(x=>String(x.id)===$('#f_kl').value),inst=c?c.inst:'[institusi]',pic=c&&c.pic?c.pic:'Bapak/Ibu [nama]';const body=SIT[$('#f_sit').value||'audiensi'][1].replace('{inst}',inst).replace('{tgl}','[tanggal]');
+ $('#f_out').textContent=$('#f_ch').value==='em'?'Subjek: Tindak lanjut kerja sama '+inst+'\n\nYth. '+pic+',\n\nSalam hormat,\n'+body+'\n\nTerima kasih.\nHormat kami,\n'+BRAND.legal:'Selamat pagi '+pic+', salam dari '+BRAND.name+'. '+body+' Terima kasih.'}
+['#f_sit','#f_kl','#f_ch'].forEach(s=>$(s).onchange=fuOut);
+$('#f_copy').onclick=()=>copy($('#f_out').textContent);
+
+route();
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
+</body>
+</html>
